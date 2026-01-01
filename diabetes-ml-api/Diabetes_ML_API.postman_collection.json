@@ -1,0 +1,332 @@
+{
+	"info": {
+		"_postman_id": "diabetes-ml-api-2025",
+		"name": "Diabetes ML Prediction API",
+		"description": "Complete test collection for Diabetes Progression Prediction API\n\n**Educational/Demo Use Only**\n\nThis collection includes:\n- Health checks\n- Model information\n- Single predictions (Low/Moderate/High risk)\n- Batch predictions\n- Error handling tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health & Status",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/health",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"health"
+							]
+						},
+						"description": "Check if API and model are loaded successfully"
+					},
+					"response": []
+				},
+				{
+					"name": "Root Endpoint",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								""
+							]
+						},
+						"description": "Get API information and available endpoints"
+					},
+					"response": []
+				},
+				{
+					"name": "Model Info",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/model/info",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"model",
+								"info"
+							]
+						},
+						"description": "Get loaded model details (type, features, preprocessing)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Single Predictions",
+			"item": [
+				{
+					"name": "Predict - Moderate Risk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": 0.03,\n  \"sex\": 0.05,\n  \"bmi\": 0.06,\n  \"bp\": 0.04,\n  \"s1\": 0.02,\n  \"s2\": 0.03,\n  \"s3\": -0.02,\n  \"s4\": 0.03,\n  \"s5\": 0.05,\n  \"s6\": 0.04\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "Moderate risk patient (slightly elevated values)\nExpected: Score 100-174"
+					},
+					"response": []
+				},
+				{
+					"name": "Predict - Low Risk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": -0.5,\n  \"sex\": -0.05,\n  \"bmi\": -0.3,\n  \"bp\": -0.2,\n  \"s1\": -0.1,\n  \"s2\": -0.1,\n  \"s3\": 0.2,\n  \"s4\": -0.2,\n  \"s5\": -0.1,\n  \"s6\": -0.1\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "Healthy young patient\nExpected: Score < 100 (Low Risk)"
+					},
+					"response": []
+				},
+				{
+					"name": "Predict - High Risk",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": 1.5,\n  \"sex\": 0.05,\n  \"bmi\": 1.0,\n  \"bp\": 1.0,\n  \"s1\": 0.8,\n  \"s2\": 0.9,\n  \"s3\": -0.5,\n  \"s4\": 0.9,\n  \"s5\": 0.8,\n  \"s6\": 0.8\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "High-risk elderly patient with multiple elevated factors\nExpected: Score ≥ 175 (High Risk)"
+					},
+					"response": []
+				},
+				{
+					"name": "Predict - Average Patient",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": 0.0,\n  \"sex\": 0.0,\n  \"bmi\": 0.0,\n  \"bp\": 0.0,\n  \"s1\": 0.0,\n  \"s2\": 0.0,\n  \"s3\": 0.0,\n  \"s4\": 0.0,\n  \"s5\": 0.0,\n  \"s6\": 0.0\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "Average patient (all mean values)\nExpected: Score ~150 (baseline)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Batch Predictions",
+			"item": [
+				{
+					"name": "Batch Predict - 3 Patients",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\n  {\n    \"age\": -0.5,\n    \"sex\": -0.05,\n    \"bmi\": -0.3,\n    \"bp\": -0.2,\n    \"s1\": -0.1,\n    \"s2\": -0.1,\n    \"s3\": 0.2,\n    \"s4\": -0.2,\n    \"s5\": -0.1,\n    \"s6\": -0.1\n  },\n  {\n    \"age\": 0.3,\n    \"sex\": 0.05,\n    \"bmi\": 0.5,\n    \"bp\": 0.4,\n    \"s1\": 0.3,\n    \"s2\": 0.4,\n    \"s3\": -0.3,\n    \"s4\": 0.5,\n    \"s5\": 0.4,\n    \"s6\": 0.3\n  },\n  {\n    \"age\": 1.5,\n    \"sex\": 0.05,\n    \"bmi\": 1.0,\n    \"bp\": 1.0,\n    \"s1\": 0.8,\n    \"s2\": 0.9,\n    \"s3\": -0.5,\n    \"s4\": 0.9,\n    \"s5\": 0.8,\n    \"s6\": 0.8\n  }\n]"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict/batch",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict",
+								"batch"
+							]
+						},
+						"description": "Batch prediction for 3 patients:\n1. Low risk (healthy young)\n2. Moderate risk (at-risk middle-aged)\n3. High risk (elderly with complications)"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Error Handling",
+			"item": [
+				{
+					"name": "Invalid - Missing Fields",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": 0.03,\n  \"sex\": 0.05,\n  \"bmi\": 0.06\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "Test validation: Missing required fields\nExpected: 422 Unprocessable Entity"
+					},
+					"response": []
+				},
+				{
+					"name": "Invalid - Wrong Data Type",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"age\": \"invalid_string\",\n  \"sex\": 0.05,\n  \"bmi\": 0.06,\n  \"bp\": 0.04,\n  \"s1\": 0.02,\n  \"s2\": 0.03,\n  \"s3\": -0.02,\n  \"s4\": 0.03,\n  \"s5\": 0.05,\n  \"s6\": 0.04\n}"
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/predict",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"predict"
+							]
+						},
+						"description": "Test validation: Wrong data type\nExpected: 422 Unprocessable Entity"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

@@ -46,7 +46,7 @@ This comprehensive notebook provides a complete end-to-end machine learning pipe
 6. **🏆 Pre-trained Model Loading**
    - Loads champion Lasso model from INTERNSHIP project
    - **Location:** `D:\JAVA\CODE\PYTHON\ML\INTERNSHIP\DiabetesProgressionPredictor\output\models\`
-   - **Performance:** R² = 0.5711, RMSE = 43.08
+   - **Performance:** R² = 0.5911, RMSE = 43.08
    - Evaluates on current test set
 
 7. **📊 Comprehensive Comparison**
@@ -130,7 +130,7 @@ Diabetes_mlops/
 ## 🎯 Performance Targets
 
 ### Target Performance (from pre-trained Lasso):
-- **R² Score:** 0.5711 (explains 57.11% of variance)
+- **R² Score:** 0.5911 (explains 59.11% of variance)
 - **RMSE:** 43.08
 - **Selected Features:** ['sex', 'bmi', 'bp', 's1', 's2', 's5']
 
@@ -141,31 +141,6 @@ Diabetes_mlops/
 ✅ Compares all approaches  
 ✅ Identifies best model automatically  
 ✅ Provides testing interface  
-
----
-
-## 📊 Expected Outputs
-
-### 1. Model Comparison Table
-```
-Model                        R² Score    RMSE      MAE
-Pre-trained Lasso ⭐         0.5711      43.08     ...
-Lasso (Tuned)                0.5XXX      4X.XX     ...
-Ridge (Tuned)                0.5XXX      4X.XX     ...
-...
-```
-
-### 2. Visualizations
-- Bar charts comparing R² scores
-- Feature importance plots
-- Prediction scenarios visualization
-
-### 3. Saved Models
-- Best model saved to `models/` directory
-- All preprocessing components included
-- Ready for production deployment
-
----
 
 ## 🧪 Testing the Model
 
@@ -211,30 +186,17 @@ The notebook uses these key libraries:
 - `seaborn` - Statistical visualizations
 - `joblib` - Model persistence
 
-All should be available in your `restored_env` conda environment.
-
 ---
 
 ## 🏆 Champion Model Details
 
 The best model is automatically identified and saved. It will be one of:
 
-1. **Pre-trained Lasso** (R² = 0.5711) - Already trained from INTERNSHIP project
+1. **Pre-trained Lasso** (R² = 0.5911) - From Projects 
 2. **Newly Tuned Model** - If better performance achieved
 
 The notebook compares both and selects the winner!
 
----
-
-## 💡 Tips for Best Results
-
-1. **Run all cells sequentially** - Don't skip cells
-2. **Wait for completion** - Hyperparameter tuning takes time
-3. **Check for errors** - Review output carefully
-4. **Save your work** - Kernel → Restart & Run All to verify
-5. **Test predictions** - Try different patient scenarios
-
----
 
 ## 🔄 Next Steps
 
@@ -262,54 +224,12 @@ After running this notebook, you can:
 
 ---
 
-## ❓ Troubleshooting
-
-### Issue: Pre-trained model not found
-**Solution:** Check that the INTERNSHIP project exists at:
-```
-D:\JAVA\CODE\PYTHON\ML\INTERNSHIP\DiabetesProgressionPredictor\output\models\
-```
-
-### Issue: Version warnings when loading models
-**Solution:** The notebook handles this - sklearn version differences are noted but models work
-
-### Issue: Slow execution
-**Solution:** Reduce hyperparameter tuning iterations in RandomizedSearchCV (change `n_iter=20` to `n_iter=10`)
-
----
 
 ## 📚 References
 
 - **Dataset:** [Scikit-learn Diabetes Dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset)
 - **Paper:** Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) "Least Angle Regression"
 - **Pre-trained Model:** INTERNSHIP/DiabetesProgressionPredictor project
-
----
-
-## ✅ Checklist
-
-Before sharing or deploying:
-
-- [ ] All cells executed successfully
-- [ ] No errors in output
-- [ ] Champion model identified
-- [ ] Model files saved to `models/` directory
-- [ ] Prediction function tested
-- [ ] Performance meets target (R² ≥ 0.55)
-- [ ] Visualizations generated
-- [ ] Feature importance analyzed
-
----
-
-## 📞 Support
-
-For questions or issues:
-1. Review cell outputs for error messages
-2. Check that all dependencies are installed
-3. Verify file paths are correct
-4. Ensure conda environment is activated
-
----
 
 **Created:** December 25, 2025  
 **Project:** Final Diabetes MLOps Pipeline  

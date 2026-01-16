@@ -1,9 +1,4 @@
-# 🏥 Final Diabetes MLOps Project - Complete Guide
-
-## 📍 Location
-**Notebook:** `D:\JAVA\CODE\PYTHON\ML\Diabetes_mlops\final_diab_mlops.ipynb`
-
----
+# 🏥  Diabetes Prediction Project - Complete Guide
 
 ## 🎯 What This Notebook Does
 

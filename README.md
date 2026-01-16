@@ -1,235 +1,141 @@
-# 🏥  Diabetes Prediction Project - Complete Guide
+# Diabetes Disease Progression Prediction
 
-## 🎯 What This Notebook Does
+## Overview
+A machine learning project for predicting diabetes disease progression using the scikit-learn diabetes dataset. This project demonstrates end-to-end ML pipeline development, from data exploration to model deployment via REST API.
 
-This comprehensive notebook provides a complete end-to-end machine learning pipeline for diabetes disease progression prediction:
+## Features
+- **Multiple ML Models**: Linear Regression, Ridge, Lasso, ElasticNet, Decision Tree, Random Forest, Gradient Boosting, and SVR
+- **Advanced Feature Engineering**: Interaction features (BMI×BP, LDL/HDL ratio, Age×BMI)
+- **Feature Selection**: Recursive Feature Elimination (RFE) for optimal feature selection
+- **Hyperparameter Tuning**: GridSearchCV and RandomizedSearchCV with cross-validation
+- **REST API**: Production-ready FastAPI service for real-time predictions
+- **Model Persistence**: Serialized models with joblib for deployment
 
-### ✨ Key Features
+## Project Structure
+```
+Diabetes-Prediction/
+├── diabetes-ml-api/              # FastAPI REST API
+│   ├── app/
+│   │   ├── main.py              # API endpoints
+│   │   ├── inference.py         # ML inference logic
+│   │   └── schemas.py           # Request/response models
+│   └── models/                   # Trained model artifacts
+├── models/                       # Saved model files
+├── diab_mlops.ipynb             # Initial ML pipeline
+├── diabetes_progression_comprehensive.ipynb
+├── final_diab_mlops.ipynb       # Complete ML pipeline
+└── first.ipynb                   # EDA notebook
+```
 
-1. **📊 Data Loading & Exploration**
-   - Loads scikit-learn diabetes dataset (442 samples, 10 features)
-   - Comprehensive exploratory data analysis
-   - Statistical summaries and visualizations
+## Model Performance
+- **Best Model**: Lasso Regression with RFE
+- **R² Score**: 0.5911 (explains 59.11% of variance)
+- **RMSE**: 43.08
+- **Selected Features**: 6 out of 10 (sex, bmi, bp, s1, s2, s5)
 
-2. **🔧 Feature Engineering**
-   - Creates 3 interaction features:
-     - `bmi_bp_interaction` (BMI × Blood Pressure)
-     - `s2_s3_ratio` (LDL/HDL cholesterol ratio)
-     - `age_bmi_interaction` (Age × BMI)
-   - Total: 13 features for modeling
+## Installation
 
-3. **🎯 Feature Selection (RFE)**
-   - Recursive Feature Elimination to select top 6 features
-   - Reduces dimensionality while maintaining predictive power
+### Requirements
+- Python 3.8+
+- pip
 
-4. **🤖 Multiple Model Training**
-   - **8 Baseline Models:**
-     - Linear Regression
-     - Ridge Regression
-     - Lasso Regression
-     - ElasticNet
-     - Decision Tree
-     - Random Forest
-     - Gradient Boosting
-     - Support Vector Regression (SVR)
-
-5. **⚙️ Hyperparameter Tuning**
-   - GridSearchCV for linear models
-   - RandomizedSearchCV for complex models
-   - 5-fold cross-validation
-
-6. **🏆 Pre-trained Model Loading**
-   - Loads champion Lasso model from INTERNSHIP project
-   - **Location:** `D:\JAVA\CODE\PYTHON\ML\INTERNSHIP\DiabetesProgressionPredictor\output\models\`
-   - **Performance:** R² = 0.5911, RMSE = 43.08
-   - Evaluates on current test set
-
-7. **📊 Comprehensive Comparison**
-   - Compares ALL models (baseline + tuned + pre-trained)
-   - Visualizations with performance metrics
-   - Identifies champion model
-
-8. **💾 Model Persistence**
-   - Saves best model as `.joblib` files
-   - Saves RFE selector and scaler
-   - Ready for production deployment
-
-9. **🧪 Interactive Testing**
-   - `predict_diabetes_progression()` function
-   - Test with custom patient data
-   - Realistic patient scenarios
-   - Risk level interpretation
-
-10. **🔍 Feature Importance**
-    - Analyzes which features drive predictions
-    - Visualizations of feature contributions
-
----
-
-## 🚀 How to Use
-
-### 1. Open the Notebook
+### Setup
 ```bash
-cd D:\JAVA\CODE\PYTHON\ML\Diabetes_mlops
+# Clone the repository
+git clone https://github.com/HARRY5D/Diabetes-Prediction.git
+cd Diabetes-Prediction
+
+# Install dependencies
+pip install numpy pandas scikit-learn matplotlib seaborn joblib
+
+# For API deployment
+cd diabetes-ml-api
+pip install -r requirements.txt
+```
+
+## Usage
+
+### Running Jupyter Notebooks
+```bash
 jupyter notebook final_diab_mlops.ipynb
 ```
 
-### 2. Run All Cells
-- Click **Kernel → Restart & Run All**
-- Wait for execution (takes ~2-5 minutes depending on hardware)
-
-### 3. Review Results
-- Check model comparison tables
-- Identify the champion model
-- Review performance metrics
-
-### 4. Make Predictions
-
-```python
-# Use the built-in function
-prediction = predict_diabetes_progression(
-    age=0.05,    # Normalized age (positive = older)
-    sex=0.05,    # Male (use -0.05 for Female)
-    bmi=0.06,    # Body mass index
-    bp=0.02,     # Blood pressure
-    s1=0.01,     # Total cholesterol
-    s2=0.03,     # LDL cholesterol (bad)
-    s3=-0.04,    # HDL cholesterol (good)
-    s4=0.02,     # Total/HDL ratio
-    s5=0.05,     # Triglycerides (log)
-    s6=0.04      # Blood sugar level
-)
-
-print(f"Predicted Disease Progression: {prediction:.2f}")
+### Running the API
+```bash
+cd diabetes-ml-api
+uvicorn app.main:app --reload
 ```
 
----
+Access the API at:
+- **API Documentation**: http://127.0.0.1:8000/docs
+- **Health Check**: http://127.0.0.1:8000/health
 
-## 📁 File Structure
-
-```
-Diabetes_mlops/
-│
-├── final_diab_mlops.ipynb           # Main comprehensive notebook
-├── diabetes_progression_comprehensive.ipynb  # Previous version
-├── models/                           # Saved models directory
-│   ├── best_model_*.joblib          # Best model
-│   ├── best_model_*_rfe.joblib      # Feature selector
-│   └── best_model_*_scaler.joblib   # Feature scaler
-│
-└── README_FINAL_PROJECT.md          # This file
+### Making Predictions
+```bash
+curl -X POST "http://127.0.0.1:8000/predict" \
+     -H "Content-Type: application/json" \
+     -d '{
+           "age": 0.03, "sex": 0.05, "bmi": 0.06, "bp": 0.04,
+           "s1": 0.02, "s2": 0.03, "s3": -0.02, "s4": 0.03,
+           "s5": 0.05, "s6": 0.04
+         }'
 ```
 
----
+## Dataset
+- **Source**: [Scikit-learn Diabetes Dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset)
+- **Samples**: 442
+- **Features**: 10 (age, sex, BMI, blood pressure, 6 blood serum measurements)
+- **Target**: Quantitative measure of disease progression one year after baseline
 
-## 🎯 Performance Targets
+## Feature Descriptions
+All features are normalized (mean-centered and scaled):
+- **age**: Age in years
+- **sex**: Gender
+- **bmi**: Body mass index
+- **bp**: Average blood pressure
+- **s1**: Total serum cholesterol
+- **s2**: Low-density lipoproteins (LDL)
+- **s3**: High-density lipoproteins (HDL)
+- **s4**: Total cholesterol / HDL ratio
+- **s5**: Serum triglycerides (log scale)
+- **s6**: Blood sugar level
 
-### Target Performance (from pre-trained Lasso):
-- **R² Score:** 0.5911 (explains 59.11% of variance)
-- **RMSE:** 43.08
-- **Selected Features:** ['sex', 'bmi', 'bp', 's1', 's2', 's5']
+## Machine Learning Pipeline
+1. **Data Loading & EDA**: Statistical analysis and visualization
+2. **Feature Engineering**: Create interaction features
+3. **Feature Selection**: RFE to identify most predictive features
+4. **Model Training**: Train 8 baseline models
+5. **Hyperparameter Tuning**: Optimize best performers
+6. **Model Evaluation**: Compare all models and select champion
+7. **Model Persistence**: Save best model with preprocessing pipeline
+8. **Deployment**: Serve predictions via REST API
 
-### What the Notebook Achieves:
-✅ Trains multiple models  
-✅ Performs hyperparameter tuning  
-✅ Loads and evaluates pre-trained champion  
-✅ Compares all approaches  
-✅ Identifies best model automatically  
-✅ Provides testing interface  
+## API Endpoints
+- `GET /`: API information
+- `GET /health`: Health check
+- `GET /model/info`: Model metadata
+- `POST /predict`: Single prediction
+- `POST /predict/batch`: Batch predictions (up to 100)
 
-## 🧪 Testing the Model
+## Technologies Used
+- **ML/Data Science**: NumPy, Pandas, Scikit-learn
+- **Visualization**: Matplotlib, Seaborn
+- **API Framework**: FastAPI
+- **Model Serialization**: Joblib
+- **Server**: Uvicorn (ASGI)
 
-The notebook includes 4 pre-defined test scenarios:
+## Disclaimer
+⚠️ This project is for **educational and demonstration purposes only**. It is not intended for clinical diagnosis or medical decision-making. Always consult qualified healthcare professionals for medical advice.
 
-1. **Healthy Young Patient** - Expected: Low progression (~50-90)
-2. **At-Risk Middle-Aged** - Expected: Moderate progression (~120-160)
-3. **High-Risk Elderly** - Expected: High progression (~200-250)
-4. **Average Patient** - Expected: Baseline progression (~150)
+## References
+- Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004). "Least Angle Regression", Annals of Statistics.
+- Scikit-learn documentation
 
-You can create custom scenarios by adjusting feature values.
+## License
+MIT License
 
----
-
-## 🔧 Feature Value Ranges
-
-All features are **normalized** (standardized). Here's what the values mean:
-
-| Feature | Range | Meaning |
-|---------|-------|---------|
-| **age** | -2.0 to 2.0 | Younger (-) to Older (+) |
-| **sex** | -0.05 to 0.05 | Female (-0.05) or Male (0.05) |
-| **bmi** | -2.5 to 3.0 | Underweight (-) to Obese (+) |
-| **bp** | -2.0 to 3.0 | Low BP (-) to High BP (+) |
-| **s1** | -2.0 to 3.0 | Total serum cholesterol |
-| **s2** | -2.0 to 3.0 | LDL cholesterol (bad) |
-| **s3** | -2.0 to 2.0 | HDL cholesterol (good) |
-| **s4** | -2.0 to 3.0 | Total cholesterol / HDL |
-| **s5** | -2.0 to 3.0 | Log of triglycerides |
-| **s6** | -2.0 to 3.0 | Blood sugar level |
-
-**Note:** Values around 0 represent average. Higher values indicate elevated levels.
-
----
-
-## 📦 Dependencies
-
-The notebook uses these key libraries:
-- `numpy` - Numerical computing
-- `pandas` - Data manipulation
-- `scikit-learn` - Machine learning
-- `matplotlib` - Plotting
-- `seaborn` - Statistical visualizations
-- `joblib` - Model persistence
+## Author
+HARRY5D
 
 ---
-
-## 🏆 Champion Model Details
-
-The best model is automatically identified and saved. It will be one of:
-
-1. **Pre-trained Lasso** (R² = 0.5911) - From Projects 
-2. **Newly Tuned Model** - If better performance achieved
-
-The notebook compares both and selects the winner!
-
-
-## 🔄 Next Steps
-
-After running this notebook, you can:
-
-1. **Deploy to Production**
-   - Use saved model files
-   - Create REST API with Flask/FastAPI
-   - Build web interface
-
-2. **Monitor Performance**
-   - Track predictions over time
-   - Detect model drift
-   - Retrain when needed
-
-3. **Enhance Features**
-   - Add more interaction terms
-   - Try polynomial features
-   - Incorporate external data
-
-4. **Improve Models**
-   - Try ensemble methods
-   - Experiment with neural networks
-   - Use AutoML tools
-
----
-
-
-## 📚 References
-
-- **Dataset:** [Scikit-learn Diabetes Dataset](https://scikit-learn.org/stable/datasets/toy_dataset.html#diabetes-dataset)
-- **Paper:** Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004) "Least Angle Regression"
-- **Pre-trained Model:** INTERNSHIP/DiabetesProgressionPredictor project
-
-**Created:** December 25, 2025  
-**Project:** Final Diabetes MLOps Pipeline  
-**Status:** ✅ Production Ready
-
----
-
-🎉 **Happy Predicting!** 🎉
+**Status**: ✅ Production Ready

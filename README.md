@@ -124,8 +124,6 @@ All features are normalized (mean-centered and scaled):
 - **Model Serialization**: Joblib
 - **Server**: Uvicorn (ASGI)
 
-## Disclaimer
-⚠️ This project is for **educational and demonstration purposes only**. It is not intended for clinical diagnosis or medical decision-making. Always consult qualified healthcare professionals for medical advice.
 
 ## References
 - Bradley Efron, Trevor Hastie, Iain Johnstone and Robert Tibshirani (2004). "Least Angle Regression", Annals of Statistics.
@@ -133,9 +131,6 @@ All features are normalized (mean-centered and scaled):
 
 ## License
 MIT License
-
-## Author
-HARRY5D
 
 ---
 **Status**: ✅ Production Ready
